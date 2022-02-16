@@ -147,28 +147,28 @@ public class SourceMetadata {
         String title = null, artist = null, album = null, date = null, genre = null;
 
         // for (int i = 0; i < metadata.length(); i++) {
-        //     Metadata.Entry entry = metadata.get(i);
+            Metadata.Entry entry = metadata.get(i);
 
-        //     if (!(entry instanceof MdtaMetadataEntry)) continue;
+            if (!(entry instanceof MdtaMetadataEntry)) continue;
 
-        //     MdtaMetadataEntry mdta = (MdtaMetadataEntry) entry;
-        //     String key = mdta.key;
+            MdtaMetadataEntry mdta = (MdtaMetadataEntry) entry;
+            String key = mdta.key;
 
-        //     try {
-        //         if (key.equals("com.apple.quicktime.title")) {
-        //             title = new String(mdta.value, "UTF-8");
-        //         } else if (key.equals("com.apple.quicktime.artist")) {
-        //             artist = new String(mdta.value, "UTF-8");
-        //         } else if (key.equals("com.apple.quicktime.album")) {
-        //             album = new String(mdta.value, "UTF-8");
-        //         } else if (key.equals("com.apple.quicktime.creationdate")) {
-        //             date = new String(mdta.value, "UTF-8");
-        //         } else if (key.equals("com.apple.quicktime.genre")) {
-        //             genre = new String(mdta.value, "UTF-8");
-        //         }
-        //     } catch(Exception ex) {
-        //         // Ignored
-        //     }
+            try {
+                if (key.equals("com.apple.quicktime.title")) {
+                    title = new String(mdta.value, "UTF-8");
+                } else if (key.equals("com.apple.quicktime.artist")) {
+                    artist = new String(mdta.value, "UTF-8");
+                } else if (key.equals("com.apple.quicktime.album")) {
+                    album = new String(mdta.value, "UTF-8");
+                } else if (key.equals("com.apple.quicktime.creationdate")) {
+                    date = new String(mdta.value, "UTF-8");
+                } else if (key.equals("com.apple.quicktime.genre")) {
+                    genre = new String(mdta.value, "UTF-8");
+                }
+            } catch(Exception ex) {
+                // Ignored
+            }
         // }
 
         if (title != null || artist != null || album != null || date != null || genre != null) {
