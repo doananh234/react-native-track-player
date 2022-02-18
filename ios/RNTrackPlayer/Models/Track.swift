@@ -25,7 +25,6 @@ class Track: NSObject, AudioItem, TimePitching, AssetOptionsProviding {
     var artworkURL: MediaURL?
     let headers: [String: Any]?
     let pitchAlgorithm: String?
-    var isLiveStream: Bool?
     
     @objc var album: String?
     @objc var artwork: MPMediaItemArtwork?
@@ -50,7 +49,6 @@ class Track: NSObject, AudioItem, TimePitching, AssetOptionsProviding {
         self.headers = dictionary["headers"] as? [String: Any]
         self.artworkURL = MediaURL(object: dictionary["artwork"])
         self.pitchAlgorithm = dictionary["pitchAlgorithm"] as? String
-        self.isLiveStream = dictionary["isLiveStream"] as? Bool
         
         self.originalObject = dictionary
     }
@@ -72,7 +70,6 @@ class Track: NSObject, AudioItem, TimePitching, AssetOptionsProviding {
         self.desc = dictionary["description"] as? String
         self.duration = dictionary["duration"] as? Double
         self.artworkURL = MediaURL(object: dictionary["artwork"])
-        self.isLiveStream = dictionary["isLiveStream"] as? Bool
         
         self.originalObject = self.originalObject.merging(dictionary) { (_, new) in new }
     }

@@ -195,9 +195,9 @@ public class RNTrackPlayer: RCTEventEmitter {
         // Progressively opt into AVAudioSession policies for background audio
         // and AirPlay 2.
         if #available(iOS 13.0, *) {
-            try? AVAudioSession.sharedInstance().setCategory(sessionCategory, mode: sessionCategoryMode, policy: sessionCategory == .ambient ? .default : .longFormAudio, options: sessionCategoryOptions)
+            try? AVAudioSession.sharedInstance().setCategory(sessionCategory, mode: sessionCategoryMode, policy: .longFormAudio, options: sessionCategoryOptions)
         } else if #available(iOS 11.0, *) {
-            try? AVAudioSession.sharedInstance().setCategory(sessionCategory, mode: sessionCategoryMode, policy: sessionCategory == .ambient ? .default : .longForm, options: sessionCategoryOptions)
+            try? AVAudioSession.sharedInstance().setCategory(sessionCategory, mode: sessionCategoryMode, policy: .longForm, options: sessionCategoryOptions)
         } else {
             try? AVAudioSession.sharedInstance().setCategory(sessionCategory, mode: sessionCategoryMode, options: sessionCategoryOptions)
         }
@@ -331,17 +331,15 @@ public class RNTrackPlayer: RCTEventEmitter {
             tracks.append(track)
         }
 
-        var index: Int = 0
         if (trackIndex.intValue > player.items.count) {
             reject("index_out_of_bounds", "The track index is out of bounds", nil)
         } else if trackIndex.intValue == -1 { // -1 means no index was passed and therefore should be inserted at the end.
-            index = player.items.count
             try? player.add(items: tracks, playWhenReady: false)
         } else {
-            index = trackIndex.intValue
             try? player.add(items: tracks, at: trackIndex.intValue)
         }
-        resolve(index)
+
+        resolve(NSNull())
     }
 
     @objc(remove:resolver:rejecter:)
@@ -647,17 +645,6 @@ public class RNTrackPlayer: RCTEventEmitter {
 
         if let previousIndex = previousIndex { dictionary["track"] = previousIndex }
         if let nextIndex = nextIndex { dictionary["nextTrack"] = nextIndex }
-
-        // Load isLiveStream option for track
-        var isTrackLiveStream = false
-        if let nextIndex = nextIndex {
-            let track = player.items[nextIndex]
-            isTrackLiveStream = (track as? Track)?.isLiveStream ?? false
-        }
-
-        if player.automaticallyUpdateNowPlayingInfo {
-            player.nowPlayingInfoController.set(keyValue: NowPlayingInfoProperty.isLiveStream(isTrackLiveStream))
-        }
 
         sendEvent(withName: "playback-track-changed", body: dictionary)
     }
